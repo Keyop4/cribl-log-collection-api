@@ -25,6 +25,7 @@ function insertLogEvent(event, fileName){
 function getLogs(requestQuery){
     const {file, keyword, limit} = requestQuery
     let keywordSearch = "";
+
     //dynamically create the wildcard search of the event column 
     if(typeof keyword==='string'){
         keywordSearch = `AND event LIKE "%${keyword}%"`
@@ -32,6 +33,7 @@ function getLogs(requestQuery){
     else if(Array.isArray(keyword)){
         keyword.forEach(item => keywordSearch = keywordSearch + `AND event LIKE "%${item}%" `)
     }
+    
     const sql = `SELECT * FROM log WHERE file = "${file}" ${keywordSearch} ORDER BY ROWID DESC LIMIT ${limit || 10}`
     return new Promise((resolve, reject) => {
         db.all(sql, (err, rows) => {
