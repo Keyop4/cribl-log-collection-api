@@ -5,7 +5,8 @@ const lineByLine = require('n-readlines');
 //and ultimately calls another function to insert each line into the log table
 function readLogFile(requestQuery){
     const {file} = requestQuery
-    const liner = new lineByLine(process.env.FILE_DIRECTORY+file); 
+    const fileDirectory = process.env.FILE_DIRECTORY || '/var/log/'
+    const liner = new lineByLine(fileDirectory+file); 
     let line;   
     
     while (line = liner.next()) {
