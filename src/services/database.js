@@ -6,7 +6,7 @@ const db = new SQLite3.Database(__dirname+'/logs.db', (err) => {
       throw err;
     }
     else {
-      console.log("Database Connected")
+      console.log("Database Connected",`${__dirname}/logs.db`);
       db.run(`CREATE TABLE log (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         event text NOT NULL,
