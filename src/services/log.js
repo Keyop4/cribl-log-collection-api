@@ -31,41 +31,26 @@ async function getLogs(requestQuery){
 
     //filter the events based on 1 keyword
     if((typeof keyword==='string') && keyword.length > 0){
-        for (let i=0; i < logEvents.length; i++){
-            let logEvent = logEvents[i];
-            if(logEvent.includes(keyword)){
-                returnEvents.push(logEvent);
-                if(returnEvents.length==eventsLimit){
-                    break;
-                } 
-            } 
-        }
+        returnEvents = processKeywordString(logEvents, keyword, eventsLimit);
     }
     //filter the events based on an array of keywords
-    else if(Array.isArray(keyword)){
-        for (let i=0; i < logEvents.length; i++){
-            let logEvent = logEvents[i];
-            let addEvent = true;
-            for(const item of keyword){
-                if(item.length > 0){
-                    if(!logEvent.includes(item)){
-                        addEvent = false;
-                        break;
-                    }
-                } 
-            }
-            if(addEvent){
-                returnEvents.push(logEvent);
-                if(returnEvents.length==eventsLimit){
-                    break;
-                } 
-            }            
-        }
+    else if(Array.isArray(keyword)){ 
+        returnEvents = processKeywordArray(logEvents, keyword, eventsLimit);
     }
     //no keyword filtering of the events
-    else{
-        for (let i=0; i < logEvents.length; i++){
-            returnEvents.push(logEvents[i]);
+    else{        
+        returnEvents = processNoKeyword(logEvents, eventsLimit);
+    }
+    return returnEvents;
+}
+
+//This function filters the events based on 1 keyword
+function processKeywordString(logEvents, keyword, eventsLimit){
+    let returnEvents = [];
+    for (let i=0; i < logEvents.length; i++){        
+        let logEvent = logEvents[i];
+        if(logEvent.includes(keyword)){
+            returnEvents.push(logEvent);
             if(returnEvents.length==eventsLimit){
                 break;
             } 
@@ -74,7 +59,42 @@ async function getLogs(requestQuery){
     return returnEvents;
 }
 
+//This function filters the events based on an array of keywords
+function processKeywordArray(logEvents, keyword, eventsLimit){
+    let returnEvents = [];
+    for (let i=0; i < logEvents.length; i++){
+        let logEvent = logEvents[i];
+        let addEvent = true;
+        for(const item of keyword){
+            if(item.length > 0){
+                if(!logEvent.includes(item)){
+                    addEvent = false;
+                    break;
+                }
+            } 
+        }
+        if(addEvent){
+            returnEvents.push(logEvent);
+            if(returnEvents.length==eventsLimit){
+                break;
+            } 
+        }            
+    }
+    return returnEvents;
+}
+
+//This function processes the events with no keyword filter
+function processNoKeyword(logEvents, eventsLimit){
+    let returnEvents = [];
+    for (let i=0; i < logEvents.length; i++){
+        returnEvents.push(logEvents[i]);
+        if(returnEvents.length==eventsLimit){
+            break;
+        } 
+    } 
+    return returnEvents;
+}
+
 module.exports = {
-    readLogFile,
     getLogs
 }
