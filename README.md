@@ -24,9 +24,4 @@ The example request `http://localhost:5000/logs?file=file1.txt&keyword=hustle&li
 The API defaults to port 5000, file folder `/var/log/`, and an event limit of 10
 To change the node environment, the port from where the API runs, the directory containing the file to be opened and read, or the event limit, create an .env file in the cribl-log-collection-api folder and add the appropriate values for NODE_ENV, PORT, FILE_DIRECTORY, and LIMIT
 
-# Automated Tests:
-1. Open a second terminal, navigate to the cribl-log-collection-api folder
-2. npm test
-
-The automated tests should run
 

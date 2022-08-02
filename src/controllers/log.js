@@ -1,24 +1,14 @@
 const logService = require('../services/log.js');
 
 function getLogs(req, res) {
-    try {
-        logService.readLogFile(req.query)    
-    }
-    catch(err){
-        return res.status(400).json({
-            message: "Failed to read file",
-            error: err.message
-        });
-    }
-
-    logService.getLogs(req.query).then((rows) => {
-        return res.status(200).json(rows)
+    logService.getLogs(req.query).then((returnEvents) => {
+        return res.status(200).json(returnEvents)
     }).catch((err) => {
-        return res.status(400).json({
+        return res.status(500).json({
             message: err,
             error: err.message
        });
-    });
+    });   
 }
 
 module.exports = {
