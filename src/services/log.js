@@ -22,6 +22,9 @@ async function readLogFile(file){
 async function getLogs(requestQuery){
     const {file, keyword, limit} = requestQuery
     let logEvents = await readLogFile(file);
+    
+    //reversing the array so that the events are returned in reverse time order,
+    //as per the requirements
     logEvents.reverse();
     let eventsLimit = limit || process.env.LIMIT || 10;
     let returnEvents = [];    
